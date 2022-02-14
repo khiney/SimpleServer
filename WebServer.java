@@ -197,17 +197,25 @@ class WebServer {
           query_pairs = splitQuery(request.replace("multiply?", ""));
 
           // extract required fields from parameters
-          Integer num1 = Integer.parseInt(query_pairs.get("num1"));
-          Integer num2 = Integer.parseInt(query_pairs.get("num2"));
+
+          Integer num1;
+          Integer num2;
+          try{
+            num1= Integer.parseInt(query_pairs.get("num1"));
+            num2= Integer.parseInt(query_pairs.get("num2"));
+            Integer result = num1 * num2;
+
+            // Generate response
+            builder.append("HTTP/1.1 200 OK\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Result is: " + result);
+          }catch (NumberFormatException ne){
+            ne.printStackTrace();
+          }
 
           // do math
-          Integer result = num1 * num2;
 
-          // Generate response
-          builder.append("HTTP/1.1 200 OK\n");
-          builder.append("Content-Type: text/html; charset=utf-8\n");
-          builder.append("\n");
-          builder.append("Result is: " + result);
 
           // TODO: Include error handling here with a correct error code and
           // a response that makes sense
@@ -246,8 +254,6 @@ class WebServer {
         // Output
         response = builder.toString().getBytes();
       }
-    }catch(NumberFormatException ne){
-      ne.printStackTrace();
     } catch(InputMismatchException ie){
       ie.printStackTrace();
     } catch (IOException e) {
