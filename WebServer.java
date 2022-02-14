@@ -198,8 +198,8 @@ class WebServer {
 
           // extract required fields from parameters
 
-          Integer num1;
-          Integer num2;
+          Integer num1 = null;
+          Integer num2= null;
           try{
             num1= Integer.parseInt(query_pairs.get("num1"));
             num2= Integer.parseInt(query_pairs.get("num2"));
@@ -211,17 +211,17 @@ class WebServer {
             builder.append("\n");
             builder.append("Result is: " + result);
           }catch (NumberFormatException ne){
-            builder.append("HTTP/1.1 400 Bad Request\n");
-            builder.append("Content-Type: text/html; charset=utf-8\n");
-            builder.append("\n");
-            builder.append("Please enter an integer");
           }
 
           // do math
-
+          if(num1==null || num2==null){
+          builder.append("HTTP/1.1 400 Bad Request\n");
+          builder.append("Content-Type: text/html; charset=utf-8\n");
+          builder.append("\n");
+          builder.append("Please enter an integer");
+          }
 
           // TODO: Include error handling here with a correct error code and
-          // a response that makes sense
 
         } else if (request.contains("github?")) {
           // pulls the query from the request and runs it with GitHub's REST API
@@ -257,8 +257,6 @@ class WebServer {
         // Output
         response = builder.toString().getBytes();
       }
-    } catch(InputMismatchException ie){
-      ie.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
       response = ("<html>ERROR: " + e.getMessage() + "</html>").getBytes();
