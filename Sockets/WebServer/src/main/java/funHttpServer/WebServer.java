@@ -18,12 +18,7 @@ package funHttpServer;
 
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Map;
-import java.util.LinkedHashMap;
+import java.util.*;
 import java.nio.charset.Charset;
 
 class WebServer {
@@ -254,6 +249,8 @@ class WebServer {
     } catch (IOException e) {
       e.printStackTrace();
       response = ("<html>ERROR: " + e.getMessage() + "</html>").getBytes();
+    } catch(InputMismatchException ie){
+      ie.printStackTrace();
     }
 
     return response;
