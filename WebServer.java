@@ -191,18 +191,17 @@ class WebServer {
         } else if (request.contains("multiply?")) {
           // This multiplies two numbers, there is NO error handling, so when
           // wrong data is given this just crashes
-
-          Map<String, String> query_pairs = new LinkedHashMap<String, String>();
-          // extract path parameters
-          query_pairs = splitQuery(request.replace("multiply?", ""));
-
-          // extract required fields from parameters
-
-          Integer num1 = null;
-          Integer num2= null;
           try{
-            num1= Integer.parseInt(query_pairs.get("num1"));
-            num2= Integer.parseInt(query_pairs.get("num2"));
+            Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+            // extract path parameters
+            query_pairs = splitQuery(request.replace("multiply?", ""));
+
+
+            // extract required fields from parameters
+            Integer num1 = Integer.parseInt(query_pairs.get("num1"));
+            Integer num2 = Integer.parseInt(query_pairs.get("num2"));
+
+            // do math
             Integer result = num1 * num2;
 
             // Generate response
@@ -210,18 +209,15 @@ class WebServer {
             builder.append("Content-Type: text/html; charset=utf-8\n");
             builder.append("\n");
             builder.append("Result is: " + result);
-          }catch (NumberFormatException ignored){
-          }
-
-          // do math
-          if(num1==null || num2==null){
-          builder.append("HTTP/1.1 400 Bad Request\n");
-          builder.append("Content-Type: text/html; charset=utf-8\n");
-          builder.append("\n");
-          builder.append("Please enter an integer");
+          }catch(NumberFormatException ie){
+            builder.append("HTTP/1.1 400 Bad Request\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Please enter an integer");
           }
 
           // TODO: Include error handling here with a correct error code and
+          // a response that makes sense
 
         } else if (request.contains("github?")) {
           // pulls the query from the request and runs it with GitHub's REST API
