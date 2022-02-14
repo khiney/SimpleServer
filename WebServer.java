@@ -246,13 +246,13 @@ class WebServer {
         // Output
         response = builder.toString().getBytes();
       }
+    }catch(NumberFormatException ne){
+      ne.printStackTrace();
+    } catch(InputMismatchException ie){
+      ie.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
       response = ("<html>ERROR: " + e.getMessage() + "</html>").getBytes();
-    } catch(InputMismatchException ie){
-      ie.printStackTrace();
-    } catch(NumberFormatException ne){
-      ne.printStackTrace();
     }
 
     return response;
