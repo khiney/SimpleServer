@@ -248,7 +248,10 @@ class WebServer {
         // Output
         response = builder.toString().getBytes();
       }
-    } catch (IOException e) {
+    } catch(InputMismatchException ie){
+      ie.printStackTrace();
+      response = ("<html>ERROR: " + ie.getMessage() + "</html>").getBytes();
+    }catch (IOException e) {
       e.printStackTrace();
       response = ("<html>ERROR: " + e.getMessage() + "</html>").getBytes();
     }
