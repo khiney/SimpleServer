@@ -191,15 +191,16 @@ class WebServer {
         } else if (request.contains("multiply?")) {
           // This multiplies two numbers, there is NO error handling, so when
           // wrong data is given this just crashes
+
+          Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+          // extract path parameters
+          query_pairs = splitQuery(request.replace("multiply?", ""));
+          Integer num1;
+          Integer num2;
           try{
-            Map<String, String> query_pairs = new LinkedHashMap<String, String>();
-            // extract path parameters
-            query_pairs = splitQuery(request.replace("multiply?", ""));
-
-
             // extract required fields from parameters
-            Integer num1 = Integer.parseInt(query_pairs.get("num1"));
-            Integer num2 = Integer.parseInt(query_pairs.get("num2"));
+            num1 = Integer.parseInt(query_pairs.get("num1"));
+            num2 = Integer.parseInt(query_pairs.get("num2"));
 
             // do math
             Integer result = num1 * num2;
@@ -210,6 +211,8 @@ class WebServer {
             builder.append("\n");
             builder.append("Result is: " + result);
           }catch(NumberFormatException ie){
+            num1=1;
+            num2=0;
             builder.append("HTTP/1.1 400 Bad Request\n");
             builder.append("Content-Type: text/html; charset=utf-8\n");
             builder.append("\n");
