@@ -195,15 +195,15 @@ class WebServer {
           Map<String, String> query_pairs = new LinkedHashMap<String, String>();
           // extract path parameters
           query_pairs = splitQuery(request.replace("multiply?", ""));
-          Integer num1;
-          Integer num2;
+          int num1;
+          int num2;
           try{
             // extract required fields from parameters
             num1 = Integer.parseInt(query_pairs.get("num1"));
             num2 = Integer.parseInt(query_pairs.get("num2"));
 
             // do math
-            Integer result = num1 * num2;
+            int result = num1 * num2;
 
             // Generate response
             builder.append("HTTP/1.1 200 OK\n");
