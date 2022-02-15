@@ -271,7 +271,7 @@ class WebServer extends Object{
           Map<String, String> query_pairs = new LinkedHashMap<String, String>();
           // extract path parameters
           try {
-            query_pairs = splitQuery(request.replace("area?", ""));
+            query_pairs = splitQuery(request.replace("palindrome?", ""));
 
 
             // extract required fields from parameters
