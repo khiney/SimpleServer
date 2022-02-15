@@ -197,11 +197,11 @@ class WebServer {
 
           // extract required fields from parameters
 
-          Integer num1;
-          Integer num2;
-          try{
-            num1= Integer.parseInt(query_pairs.get("num1"));
-            num2= Integer.parseInt(query_pairs.get("num2"));
+           if(isNumeric(query_pairs.get("num1"))&&isNumeric(query_pairs.get("num2"))){
+
+
+            Integer num1= Integer.parseInt(query_pairs.get("num1"));
+            Integer num2= Integer.parseInt(query_pairs.get("num2"));
             Integer result = num1 * num2;
 
             // Generate response
@@ -209,9 +209,13 @@ class WebServer {
             builder.append("Content-Type: text/html; charset=utf-8\n");
             builder.append("\n");
             builder.append("Result is: " + result);
-          }catch (NumberFormatException ne){
-            ne.printStackTrace();
-          }
+           }else{
+             builder.append("HTTP/1.1 400 Bad Request\n");
+             builder.append("Content-Type: text/html; charset=utf-8\n");
+             builder.append("\n");
+             builder.append("Please enter a valid integer");
+           }
+
 
           // do math
 
@@ -253,7 +257,7 @@ class WebServer {
         // Output
         response = builder.toString().getBytes();
       }
-    } catch(InputMismatchException ie){
+    } catch(NumberFormatException ie){
       ie.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
@@ -366,5 +370,28 @@ class WebServer {
       System.out.println("Exception in url request:" + ex.getMessage());
     }
     return sb.toString();
+  }
+  public static boolean isNumeric(String str) {
+    if (str == null) {
+      return false;
+    }
+    int length = str.length();
+    if (length == 0) {
+      return false;
+    }
+    int i = 0;
+    if (str.charAt(0) == '-') {
+      if (length == 1) {
+        return false;
+      }
+      i = 1;
+    }
+    for (; i < length; i++) {
+      char c = str.charAt(i);
+      if (c < '0' || c > '9') {
+        return false;
+      }
+    }
+    return true;
   }
 }
