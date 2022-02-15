@@ -251,7 +251,8 @@ class WebServer extends Object{
             builder.append("Check the todos mentioned in the Java source file");
             // TODO: Parse the JSON returned by your fetch and create an appropriate
             JSONObject newObject = new JSONObject(json);
-            System.out.println(newObject.getJSONObject("owner").getString("owner"));
+            JSONObject owner = newObject.get("owner");
+            System.out.println(owner.getString("login"));
             // response
             // and list the owner name, owner id and name of the public repo on your webpage, e.g.
             // amehlhase, 46384989 -> memoranda
