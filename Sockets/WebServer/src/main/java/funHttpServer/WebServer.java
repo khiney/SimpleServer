@@ -19,11 +19,11 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.nio.charset.Charset;
-import org.json.*;
+//import org.json.*;
 
 class WebServer extends Object{
   public static void main(String args[]) {
-    WebServer server = new WebServer(9000);
+    WebServer server = new WebServer(8888);
   }
 
   /**
@@ -226,12 +226,43 @@ class WebServer extends Object{
           }
 
 
+        }else if (request.contains("area?")) {
+          // This multiplies two numbers, there is NO error handling, so when
+          // wrong data is given this just crashes
 
-          // do math
+          Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+          // extract path parameters
+          try{
+            query_pairs = splitQuery(request.replace("area?", ""));
 
 
-          // TODO: Include error handling here with a correct error code and
-          // a response that makes sense
+            // extract required fields from parameters
+
+            if(isNumeric(query_pairs.get("height")) && isNumeric(query_pairs.get("base")) && Integer.parseInt(query_pairs.get("height")) > 0 && Integer.parseInt(query_pairs.get("base")) > 0){
+
+
+              Integer height= Integer.parseInt(query_pairs.get("height"));
+              Integer base= Integer.parseInt(query_pairs.get("base"));
+              float result = (float)(height * base)/2;
+
+              // Generate response
+              builder.append("HTTP/1.1 200 OK\n");
+              builder.append("Content-Type: text/html; charset=utf-8\n");
+              builder.append("\n");
+              builder.append("The area of the triangle is: " + result);
+            }else{
+              builder.append("HTTP/1.1 400 Bad Request\n");
+              builder.append("Content-Type: text/html; charset=utf-8\n");
+              builder.append("\n");
+              builder.append("Please enter a valid integer");
+            }
+          }catch(StringIndexOutOfBoundsException se){
+            builder.append("HTTP/1.1 400 Bad Request\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Please enter a valid integer");
+          }
+
 
         } else if (request.contains("github?")) {
           // pulls the query from the request and runs it with GitHub's REST API
@@ -246,14 +277,13 @@ class WebServer extends Object{
           try {
             query_pairs = splitQuery(request.replace("github?", ""));
             String json = fetchURL("https://api.github.com/" + query_pairs.get("query"));
-            //System.out.println(json);
+            System.out.println(json);
 
             builder.append("Check the todos mentioned in the Java source file");
             // TODO: Parse the JSON returned by your fetch and create an appropriate
-            String json2 = "{"+json+"}";
-            JSONObject newObject = new JSONObject(json2);
-            JSONObject owner = newObject.getJSONObject("owner");
-            System.out.println(owner.getString("login"));
+            //JSONObject newObject = new JSONObject(json);
+            //JSONObject owner = newObject.getJSONObject("owner");
+            //System.out.println(owner.getString("login"));
             // response
             // and list the owner name, owner id and name of the public repo on your webpage, e.g.
             // amehlhase, 46384989 -> memoranda
