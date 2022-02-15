@@ -250,7 +250,8 @@ class WebServer extends Object{
 
             builder.append("Check the todos mentioned in the Java source file");
             // TODO: Parse the JSON returned by your fetch and create an appropriate
-            JSONObject newObject = new JSONObject(json);
+            String json2 = "{"+json+"}";
+            JSONObject newObject = new JSONObject(json2);
             JSONObject owner = newObject.getJSONObject("owner");
             System.out.println(owner.getString("login"));
             // response
