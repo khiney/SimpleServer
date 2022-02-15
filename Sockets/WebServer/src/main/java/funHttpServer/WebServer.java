@@ -8,9 +8,8 @@ You can also do some other simple GET requests:
 4) /multiply?num1=3&num2=4 multiplies the two inputs and responses with the result
 5) /github?query=users/amehlhase316/repos (or other GitHub repo owners) will lead to receiving
    JSON which will for now only be printed in the console. See the todo below
-
-The reading of the request is done "manually", meaning no library that helps making things a 
-little easier is used. This is done so you see exactly how to pars the request and 
+The reading of the request is done "manually", meaning no library that helps making things a
+little easier is used. This is done so you see exactly how to pars the request and
 write a response back
 */
 
@@ -105,7 +104,7 @@ class WebServer {
         // find end of header("\n\n")
         if (line == null || line.equals(""))
           done = true;
-        // parse GET format ("GET <path> HTTP/1.1")
+          // parse GET format ("GET <path> HTTP/1.1")
         else if (line.startsWith("GET")) {
           int firstSpace = line.indexOf(" ");
           int secondSpace = line.indexOf(" ", firstSpace + 1);
@@ -197,17 +196,29 @@ class WebServer {
           query_pairs = splitQuery(request.replace("multiply?", ""));
 
           // extract required fields from parameters
-          Integer num1 = Integer.parseInt(query_pairs.get("num1"));
-          Integer num2 = Integer.parseInt(query_pairs.get("num2"));
+
+           if(isNumeric(query_pairs.get("num1")) && isNumeric(query_pairs.get("num2"))){
+
+
+            Integer num1= Integer.parseInt(query_pairs.get("num1"));
+            Integer num2= Integer.parseInt(query_pairs.get("num2"));
+            Integer result = num1 * num2;
+
+            // Generate response
+            builder.append("HTTP/1.1 200 OK\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Result is: " + result);
+           }else{
+             builder.append("HTTP/1.1 400 Bad Request\n");
+             builder.append("Content-Type: text/html; charset=utf-8\n");
+             builder.append("\n");
+             builder.append("Please enter a valid integer");
+           }
+
 
           // do math
-          Integer result = num1 * num2;
 
-          // Generate response
-          builder.append("HTTP/1.1 200 OK\n");
-          builder.append("Content-Type: text/html; charset=utf-8\n");
-          builder.append("\n");
-          builder.append("Result is: " + result);
 
           // TODO: Include error handling here with a correct error code and
           // a response that makes sense
@@ -246,6 +257,8 @@ class WebServer {
         // Output
         response = builder.toString().getBytes();
       }
+    } catch(NumberFormatException ie){
+      ie.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
       response = ("<html>ERROR: " + e.getMessage() + "</html>").getBytes();
@@ -268,7 +281,7 @@ class WebServer {
     for (String pair : pairs) {
       int idx = pair.indexOf("=");
       query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"),
-          URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
+              URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
     }
     // {{"q", "hello world/me"}, {"bob","5"}}
     return query_pairs;
@@ -326,7 +339,7 @@ class WebServer {
    * a method to make a web request. Note that this method will block execution
    * for up to 20 seconds while the request is being satisfied. Better to use a
    * non-blocking request.
-   * 
+   *
    * @param aUrl the String indicating the query url for the OMDb api search
    * @return the String result of the http request.
    *
@@ -357,5 +370,28 @@ class WebServer {
       System.out.println("Exception in url request:" + ex.getMessage());
     }
     return sb.toString();
+  }
+  public static boolean isNumeric(String str) {
+    if (str == null) {
+      return false;
+    }
+    int length = str.length();
+    if (length == 0) {
+      return false;
+    }
+    int i = 0;
+    if (str.charAt(0) == '-') {
+      if (length == 1) {
+        return false;
+      }
+      i = 1;
+    }
+    for (; i < length; i++) {
+      char c = str.charAt(i);
+      if (c < '0' || c > '9') {
+        return false;
+      }
+    }
+    return true;
   }
 }
