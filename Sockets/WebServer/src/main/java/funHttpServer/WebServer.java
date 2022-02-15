@@ -19,6 +19,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.nio.charset.Charset;
+
+import static java.lang.Character.isDigit;
 //import org.json.*;
 
 class WebServer extends Object{
@@ -282,7 +284,7 @@ class WebServer extends Object{
               while (i < j) {
 
               // If there is a mismatch
-              if (word.charAt(i) != word.charAt(j)){
+              if (word.charAt(i) != word.charAt(j) || isDigit(word.charAt(i))|| word.length() < 3 || word.charAt(j)==' '){
                 check = false;
                 break;
               }
