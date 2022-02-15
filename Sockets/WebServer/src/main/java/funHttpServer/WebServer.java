@@ -264,7 +264,55 @@ class WebServer extends Object{
           }
 
 
-        } else if (request.contains("github?")) {
+        } else if (request.contains("palindrome?")) {
+          // This multiplies two numbers, there is NO error handling, so when
+          // wrong data is given this just crashes
+
+          Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+          // extract path parameters
+          try {
+            query_pairs = splitQuery(request.replace("area?", ""));
+
+
+            // extract required fields from parameters
+
+              String word = query_pairs.get("check");
+              int i = 0, j = word.length()-1;
+              boolean check = true;
+              while (i < j) {
+
+              // If there is a mismatch
+              if (word.charAt(i) != word.charAt(j)){
+                check = false;
+                break;
+              }
+
+              // Increment first pointer and
+              // decrement the other
+                i++;
+                j--;
+              }
+
+
+              // Generate response
+              builder.append("HTTP/1.1 200 OK\n");
+              builder.append("Content-Type: text/html; charset=utf-8\n");
+              builder.append("\n");
+              if(check){
+                builder.append(word + " is a palindrome :D");
+              }else{
+                builder.append(word + " is not a palindrome :(");
+              }
+
+          }catch(StringIndexOutOfBoundsException se){
+            builder.append("HTTP/1.1 400 Bad Request\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Please enter a valid integer");
+          }
+
+
+        }else if (request.contains("github?")) {
           // pulls the query from the request and runs it with GitHub's REST API
           // check out https://docs.github.com/rest/reference/
           //
