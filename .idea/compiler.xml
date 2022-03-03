@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="Echo_Java" target="11" />
+      <module name="GroupSerializeSocket" target="11" />
+      <module name="JavaSimpleSock" target="11" />
+      <module name="JavaThreadSock" target="11" />
+      <module name="MulticastSocket" target="11" />
+      <module name="SimpleWebServer" target="11" />
+      <module name="Socket" target="11" />
+      <module name="SocketState" target="11" />
+      <module name="WebServer" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
