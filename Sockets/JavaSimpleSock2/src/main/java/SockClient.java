@@ -31,7 +31,7 @@ class SockClient {
 
       ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
 
-      System.out.println("You want to check for perfect square (p),  (r), or exit (exit)?");
+      System.out.println("You want to check for perfect square (p), combine strings (c), or exit (exit)?");
       String choice = scanner.nextLine();
 
 
@@ -39,16 +39,17 @@ class SockClient {
       JSONObject request = new JSONObject();
 
       if (choice.equals("p")){
-        System.out.println("What is your string?");
+        System.out.println("What is your number?");
         String input = scanner.nextLine();
         request.put("type", "p");
         request.put("data", input);
-      } else if(choice.equals("r")) {
+      } else if(choice.equals("c")) {
         // send over "reverse" request
-        System.out.println("What is your string?");
+        System.out.println("What is your first String?");
         String input1 = scanner.nextLine();
+        System.out.println("What is your second String?");
         String input2 = scanner.nextLine();
-        request.put("type", "r");
+        request.put("type", "c");
         request.put("data1", input1);
         request.put("data2", input2);
       } else if(choice.equals("exit")){
@@ -67,9 +68,8 @@ class SockClient {
 
       if (res.getBoolean("ok") && choice.equals("p")){
         System.out.println(res.getString("data"));
-      }else if(res.getBoolean("ok") && choice.equals("r")){
-        System.out.println(res.getString("data1"));
-        System.out.println(res.getString("data2"));
+      }else if(res.getBoolean("ok") && (choice.equals("c")||choice.equals("exit"))){
+        System.out.println(res.getString("data"));
       }else{
         System.out.println(res.getString("error"));
       }
