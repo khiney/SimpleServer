@@ -4,14 +4,12 @@ import java.util.Scanner;
 import org.json.*;
 
 /**
- * A class to demonstrate a simple client-server connection using sockets.
- * Ser321 Foundations of Distributed Software Systems
- * see http://pooh.poly.asu.edu/Ser321
- * @author Tim Lindquist Tim.Lindquist@asu.edu
- *         Software Engineering, CIDSE, IAFSE, ASU Poly
- * @version April 2020
+ * This is the SockClient for assignment3. SockClient is the client for SockServer
  *
- * @modified-by David Clements <dacleme1@asu.edu> September 2020
+ * @author Korry Hinestroza
+ *
+ * @version 03 March 2022
+ *
  */
 class SockClient {
   public static void main (String args[]) {
@@ -58,7 +56,6 @@ class SockClient {
 
       // write the whole message
       os.writeObject(request.toString());
-      //os.writeObject("Hello");            //FOR TESTING
 
       // make sure it wrote and doesn't get cached in a buffer
       os.flush();
