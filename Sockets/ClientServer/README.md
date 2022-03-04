@@ -16,6 +16,7 @@ This function takes two strings and combines them by alternating letters.
     {"type": "p", "data": <Integer>}
 
 **"ok" is "true" for successful cases**
+
 **"ok" is "false" for unsuccessful cases**
 ###### Response
 Ok case
