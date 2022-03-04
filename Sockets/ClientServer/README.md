@@ -15,10 +15,12 @@ This function takes two strings and combines them by alternating letters.
 ###### Request
     {"type": "p", "data": <Integer>}
 
+**"ok" is "true" for successful cases**
+**"ok" is "false" for unsuccessful cases**
 ###### Response
-Ok case //ok = true
+Ok case
 {"type": "p", "data": <String>}
-Error cases: //ok = false
+Error cases
 {"type": "error", "message": <String>}
 
     String is:
@@ -36,9 +38,9 @@ Error cases: //ok = false
     Enter first word and press enter. Enter second word and press enter.
 
 ###### Response
-Ok case //ok = true
+Ok case
 {"type": "c", "data": <String>}
-Error cases: //ok = false
+Error cases
 {"type": "error", "message": <String>}
 
     String is:
@@ -51,20 +53,18 @@ Error cases: //ok = false
     {"type": "exit"}
 
 ###### Response
-Ok case //ok = true
+Ok case 
 {"type": "exit", "data": <String>}
-Error cases: //ok = false
-no error cases implemented, client will likely not receive an answer -- this is of course not good
 
 
 #### Request type missing / unknown
-Server will respond with: //ok = false
+Server will respond with:
 {"type": "error", "message": "Please enter p or c for type."}
 {"type": "error", "message": "Type is empty, please enter a valid request Type."}
 
 
 #### JSON Object invalid
-Server will respond with: //ok = false
+Server will respond with:
 {"type": "error", "message": "Please input a valid JSON Object"}
 
 
