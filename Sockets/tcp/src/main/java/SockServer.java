@@ -69,6 +69,7 @@ public class SockServer {
       boolean getName = false;
       boolean getNum = false;
       boolean playGame = false;
+      boolean exit = false;
       //ArrayList<> puppy =
 
 
@@ -87,7 +88,12 @@ public class SockServer {
         if(isJSONValid(s)){
           JSONObject json = new JSONObject(s); // the requests that is received
 
-          if (json.getString("type").equals("begin")){
+          if (json.getString("value").equalsIgnoreCase("quit")){
+            response.put("type","exit" );
+            response.put("value","Thanks for playing the game. Goodbye" );
+            exit = true;
+          }
+          else if (json.getString("type").equals("begin")){
 
             System.out.println("- Got a start");
 
@@ -168,6 +174,13 @@ public class SockServer {
         }
         PrintWriter outWrite = new PrintWriter(sock.getOutputStream(), true); // using a PrintWriter here, you could also use and ObjectOutputStream or anything you fancy
         outWrite.println(response.toString());  //Parse to only display string in Client
+        if(exit){
+          sock.close();
+          in.close();
+          out.close();
+          serv.close();
+          break;
+        }
       }
 
     } catch(Exception e) {e.printStackTrace();}

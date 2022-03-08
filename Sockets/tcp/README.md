@@ -107,47 +107,38 @@ ClientGUI - clientGUI provides the GUI to the client. It also takes input from t
 
 ##### Protocol Description
 
-#### Perfect Square Check
+#### Entering Name
 ###### Request
-    {"type": "p", "data": <Integer>}
-
-**"ok" is "true" for successful cases**
-
-**"ok" is "false" for unsuccessful cases**
-###### Response
-Ok case
-{"ok": true, "data": <String>}
-Error cases
-{"ok": false, "error": <String>}
-
-    String is:
-    - "Input is not an integer, please enter an integer" -- if the "data" field in the request is not an Integer
-    - "Type is empty, please enter a valid request Type." -- if type field is missing
-    - "Invalid number. Please enter a positive integer." -- if integer is negative
-
-
-#### Combine Strings
-###### Request
-    {"type": "c", "data1": <String>, "data2": <String>}
-    
-    Entering data1/data2:
-    - When entering data1 and data2 each word is entered one at a time 
-    Enter first word and press enter. Enter second word and press enter.
+    {"type": "hello", "value": <String>}
 
 ###### Response
 Ok case
-{"ok": true, "data": <String>}
+{"type": "hello", "value": <String>}
 Error cases
-{"ok": false, "error": <String>}
+{"type": "error", "message": <String>}
 
     String is:
-    - "One of your inputs does not contain all letters. Please try again" -- when one of your inputs is not all letters
-    - "One of your inputs are empty. Please try again" -- one of your strings are empty
+    - "Input is empty. Please enter your name." -- if the user clicks submit without typing
+
+
+#### Entering Number of Rounds
+###### Request
+    {"type": "hello", "value": <Integer>}
+
+###### Response
+Ok case
+{"type": "hello", "value": <String>}
+Error cases
+{"type": "error", "message": <String>}
+
+    String is:
+    - "Invalid input. Please enter an integer" -- when input is not a number
+    - "Please enter an integer from 1 to 6." -- when input is not from 1 to 6 (number of images available)
 
 
 #### Exit
 ###### Request
-    {"type": "exit"}
+    {"type": "hello", "value": "exit"}
 
 ###### Response
 Ok case
