@@ -42,18 +42,24 @@ public class SockServer {
             if(req.getString("type").equals("exit")){
               exit = true;
               res.put("ok", true);
-              res.put("data", "Thank you for using the server!");
+              res.put("data", "Thanks for using the server!");
             }else if ( req.getString("type").equals("p")){
 
               if(isNumeric(req.getString("data"))){
-                System.out.println("Received the Integer " + req.getString("data"));
-                res.put("ok", true);
-                double num = Math.sqrt(Double.parseDouble(req.getString("data")));
-                if(num - Math.floor(num) == 0){
-                  String numSqrt = String.valueOf((int)num);
-                  res.put("data", "Yes, " + req.getString("data")+" is a perfect square: "+numSqrt+" * "+numSqrt+" = "+req.getString("data"));
+                if(req.getString("data").charAt(0) == '-'){
+                  res.put("ok", false);
+                  res.put("error", "Invalid number. Please enter a positive integer.");
                 }else{
-                  res.put("data", "No, " + req.getString("data")+" is NOT a perfect square");
+                  System.out.println("Received the Integer " + req.getString("data"));
+                  res.put("ok", true);
+                  double num = Math.sqrt(Double.parseDouble(req.getString("data")));
+                  if(num - Math.floor(num) == 0){
+                    String numSqrt = String.valueOf((int)num);
+                    res.put("data", "Yes, " + req.getString("data")+" is a perfect square: "+numSqrt+" * "+numSqrt+" = "+req.getString("data"));
+
+                  }else{
+                    res.put("data", "No, " + req.getString("data")+" is NOT a perfect square");
+                  }
                 }
               }else{
                 res.put("ok", false);

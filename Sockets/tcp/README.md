@@ -91,3 +91,75 @@ gradle runClient
 - addEventHandlers(EventHandlers handlerObj) :  Add event listeners
 - appendOutput(String message) :  Add message to output text
 
+##### Author: Korry Hinestroza
+* Version: March 2022
+
+
+##### (a)Description
+SockServer - sockServer implements the image guessing game. The server gets information from the user 
+prior to starting the game such as name and number of rounds the user wishes to play. The server then sends 
+the client an image and allows them to guess the image, get a hint(clearer image), or move on to the next image.
+The user receives 30 points for correct guesses.
+
+ClientGUI - clientGUI provides the GUI to the client. It also takes input from the client (via GUI textbox)
+* Server: use `runServer` to connect to default port '8080' or use `runServer -Pport=<port#>` for custom port
+* Client: 
+
+##### Protocol Description
+
+#### Perfect Square Check
+###### Request
+    {"type": "p", "data": <Integer>}
+
+**"ok" is "true" for successful cases**
+
+**"ok" is "false" for unsuccessful cases**
+###### Response
+Ok case
+{"ok": true, "data": <String>}
+Error cases
+{"ok": false, "error": <String>}
+
+    String is:
+    - "Input is not an integer, please enter an integer" -- if the "data" field in the request is not an Integer
+    - "Type is empty, please enter a valid request Type." -- if type field is missing
+    - "Invalid number. Please enter a positive integer." -- if integer is negative
+
+
+#### Combine Strings
+###### Request
+    {"type": "c", "data1": <String>, "data2": <String>}
+    
+    Entering data1/data2:
+    - When entering data1 and data2 each word is entered one at a time 
+    Enter first word and press enter. Enter second word and press enter.
+
+###### Response
+Ok case
+{"ok": true, "data": <String>}
+Error cases
+{"ok": false, "error": <String>}
+
+    String is:
+    - "One of your inputs does not contain all letters. Please try again" -- when one of your inputs is not all letters
+    - "One of your inputs are empty. Please try again" -- one of your strings are empty
+
+
+#### Exit
+###### Request
+    {"type": "exit"}
+
+###### Response
+Ok case
+{"type": "exit", "data": <String>}
+
+
+#### Request type missing / unknown
+Server will respond with:
+{"type": "error", "message": "Please enter p or c for type."}
+{"ok": false, "error": "Type is empty, please enter a valid request Type."}
+
+
+#### JSON Object invalid
+Server will respond with:
+{"ok": false, "error": "Please input a valid JSON Object"}

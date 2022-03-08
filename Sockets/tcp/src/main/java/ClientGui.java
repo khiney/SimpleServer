@@ -89,7 +89,7 @@ public class ClientGui implements src.main.java.OutputPanel.EventHandlers {
 		insertImage("img/hi.png", 0, 0);
 
 		open(); // opening server connection here
-		currentMessage = "{'type': 'start'}"; // very initial start message for the connection
+		currentMessage = "{'type': 'begin'}"; // very initial start message for the connection
 		try {
 			os.writeObject(currentMessage);
 		} catch (IOException e) {
@@ -170,13 +170,16 @@ public class ClientGui implements src.main.java.OutputPanel.EventHandlers {
 		System.out.println("submit clicked ");
 
 		// Pulls the input box text
-		String input = outputPanel.getInputText();
+		JSONObject request = new JSONObject();
 
-		// TODO evaluate the input from above and create a request for client. 
-
+		String input = outputPanel.getInputText(); 		// Input from submit text box in GUI
+		//System.out.println("\n\n"+input+"\n\n");	//FOR TESTING
+		// TODO evaluate the input from above and create a request for client.
+		request.put("type","hello");
+		request.put("value",input);
 		// send request to server
 		try {
-			  os.writeObject("Blub"); // this will crash the server, since it is not a JSON and thus the server will not handle it. 
+			  os.writeObject(request.toString()); // this will crash the server, since it is not a JSON and thus the server will not handle it.
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -185,8 +188,17 @@ public class ClientGui implements src.main.java.OutputPanel.EventHandlers {
 		// wait for an answer and handle accordingly
 		try {
 			System.out.println("Waiting on response");
-			String string = this.bufferedReader.readLine();
-			System.out.println(string);
+			String string = this.bufferedReader.readLine();		//Parse JSON here I think????
+			//System.out.println(string);
+			JSONObject display = new JSONObject(string);
+			if (display.getString("type").equals("hello")){
+				outputPanel.appendOutput(display.getString("value").toString());
+			}else if(display.getString("type").equals("image")){
+				System.out.println(display.getString("value"));
+				outputPanel.appendOutput(display.getString("message").toString());
+			}else{
+				outputPanel.appendOutput(display.getString("message").toString());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -235,9 +247,9 @@ public class ClientGui implements src.main.java.OutputPanel.EventHandlers {
 
 
 		try {
-			String host = "localhost";
-			int port = 8888;
-
+			String host = args[0];
+			int port = Integer.parseInt(args[1]);
+			System.out.println(host +" and "+port);
 
 			ClientGui main = new ClientGui(host, port);
 			main.show(true);
