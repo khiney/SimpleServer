@@ -96,16 +96,17 @@ gradle runClient
 
 
 ##### (a)Description
-SockServer - sockServer implements the image guessing game. The server gets information from the user 
+SockServer - SockServer implements the image guessing game. The server gets information from the user 
 prior to starting the game such as name and number of rounds the user wishes to play. The server then sends 
 the client an image and allows them to guess the image, get a hint(clearer image), or move on to the next image.
 The user receives 30 points for correct guesses.
 
-ClientGUI - clientGUI provides the GUI to the client. It also takes input from the client (via GUI textbox)
+ClientGUI - ClientGUI provides the GUI to the user. It also takes input from the client (via GUI submit box). 
+ClientGUI takes servers answer and displays it to the user.
 * Server: use `runServer` to connect to default port '8080' or use `runServer -Pport=<port#>` for custom port
-* Client: 
+* Client: use `runClient` to connect to default host "localhost", port '8080' or use `runClient -Phost=<host> -Pport=<port#>` for custom host/port
 
-##### Protocol Description
+##### (d)Protocol Design
 
 #### Perfect Square Check
 ###### Request
