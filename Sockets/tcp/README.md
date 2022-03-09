@@ -106,7 +106,27 @@ ClientGUI takes servers answer and displays it to the user.
 * Server: use `runServer` to connect to default port '8080' or use `runServer -Pport=<port#>` for custom port
 * Client: use `runClient` to connect to default host "localhost", port '8080' or use `runClient -Phost=<host> -Pport=<port#>` for custom host/port
 
+##### (b)Requirements Fulfilled
+- 1, 2, 3, 4, 5, 6(partial), 7(partial), 8, 9, 10, 11(partial), 12(partial), 13, 14, 15  
+
+##### (c)UML Diagram
+- UML Diagram image included in rep (see ClientServer_Diagram) 
+
 ##### (d)Protocol Design
+
+#### Starting Game
+###### Request
+    {"type": "begin"}
+
+###### Response
+Ok case
+{"type": "hello", "value": <String>}
+Error cases
+{"type": "error", "message": <String>}
+
+    String is:
+    - "type unknown. Please input valid type" -- if the user does not include a "type" in request
+
 
 #### Entering Name
 ###### Request
@@ -120,6 +140,7 @@ Error cases
 
     String is:
     - "Input is empty. Please enter your name." -- if the user clicks submit without typing
+    - "input has no value" -- if the user does not have send a value
 
 
 #### Entering Number of Rounds
@@ -135,23 +156,40 @@ Error cases
     String is:
     - "Invalid input. Please enter an integer" -- when input is not a number
     - "Please enter an integer from 1 to 6." -- when input is not from 1 to 6 (number of images available)
+    - "input has no value" -- if the user does not have send a value
 
-
-#### Exit
+#### Playing the Game
 ###### Request
-    {"type": "hello", "value": "exit"}
+    {"type": "hello", "value": <String>}
 
 ###### Response
 Ok case
-{"type": "exit", "data": <String>}
+{"type": "hello", "value": <String>}
+Error cases
+{"type": "error", "message": <String>}
+
+    String is:
+    - "Invalid input. Please enter an integer" -- when input is not a number
+    - "Please enter an integer from 1 to 6." -- when input is not from 1 to 6 (number of images available)
+    - "input has no value" -- if the user does not have send a value
+
+#### Exit
+###### Request
+    {"type": "hello", "value": "quit"}
+
+###### Response
+Ok case
+{"type": "quit", "value": <String>}
+
+##### (e)Design Explanation
+
+##### (f)Screen Capture Link
+
+##### (g)UDP over TCP
+-The program would have a couple differences if it used UDP instead of TCP. One difference is that UDP
+does not send acknowledgements. This would mean that when monitoring wireshark, I would not be acknowledged
+when a packet has arrived to its destination. Another difference is packets are not split when they are 
+too large while using UDP. This means that data may be lost during the back and forth conversation if 
+packets are too large. Packets would need to be split manually by the developer. 
 
 
-#### Request type missing / unknown
-Server will respond with:
-{"type": "error", "message": "Please enter p or c for type."}
-{"ok": false, "error": "Type is empty, please enter a valid request Type."}
-
-
-#### JSON Object invalid
-Server will respond with:
-{"ok": false, "error": "Please input a valid JSON Object"}

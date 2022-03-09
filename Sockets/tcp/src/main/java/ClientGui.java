@@ -195,7 +195,10 @@ public class ClientGui implements src.main.java.OutputPanel.EventHandlers {
 				outputPanel.appendOutput(display.getString("value").toString());
 			}else if(display.getString("type").equals("image")){
 				System.out.println(display.getString("value"));
-				outputPanel.appendOutput(display.getString("message").toString());
+				outputPanel.appendOutput(display.getString("value").toString());
+			}else if(display.getString("type").equals("quit")){
+				outputPanel.appendOutput(display.getString("value").toString());
+				System.exit(0);
 			}else{
 				outputPanel.appendOutput(display.getString("message").toString());
 			}
@@ -249,7 +252,7 @@ public class ClientGui implements src.main.java.OutputPanel.EventHandlers {
 		try {
 			String host = args[0];
 			int port = Integer.parseInt(args[1]);
-			System.out.println(host +" and "+port);
+			System.out.println("Connecting to "+ host +" and port "+port);
 
 			ClientGui main = new ClientGui(host, port);
 			main.show(true);

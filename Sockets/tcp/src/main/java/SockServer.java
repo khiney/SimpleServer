@@ -70,6 +70,7 @@ public class SockServer {
       boolean getNum = false;
       boolean playGame = false;
       boolean exit = false;
+      boolean begin = false;
       //ArrayList<> puppy =
 
 
@@ -88,84 +89,95 @@ public class SockServer {
         if(isJSONValid(s)){
           JSONObject json = new JSONObject(s); // the requests that is received
 
-          if (json.getString("value").equalsIgnoreCase("quit")){
-            response.put("type","exit" );
-            response.put("value","Thanks for playing the game. Goodbye" );
-            exit = true;
-          }
-          else if (json.getString("type").equals("begin")){
+          if(json.has("type")){
+            if (json.getString("type").equals("begin") && !begin){
 
-            System.out.println("- Got a start");
+              System.out.println("- Got a start");
 
-            response.put("type","hello" );
-            response.put("value","Hello, please tell me your name." );
-            sendPic("img/lose.jpg", response); // calling a method that will manipulate the image and will make it send ready
-            getName = true;
-          }else if(getName){
-            if(json.getString("value").length() != 0){
-              name = json.getString("value");
               response.put("type","hello" );
-              response.put("value","Hello "+ json.getString("value")+"\nHow many games would you like to play?");
-              getName = false;
-              getNum=true;
-            }else{
-              response.put("type","error" );
-              response.put("message","Input is empty. Please enter your name.");
-            }
-          }
-          else if(getNum){
-            if(isNumeric(json.getString("value"))){
-              if(Integer.parseInt(json.getString("value")) > 6 || Integer.parseInt(json.getString("value")) < 1){
-                numRounds = json.getString("value");
-                System.out.println(numRounds);
-                num = Integer.parseInt(json.getString("value"));
+              response.put("value","Hello, please tell me your name." );
+              sendPic("img/lose.jpg", response); // calling a method that will manipulate the image and will make it send ready
+              getName = true;
+              begin = true;
+            }if(json.has("value")){
+              if (json.getString("value").equalsIgnoreCase("quit")){
+                response.put("type","quit" );
+                response.put("value","Thanks for playing the game. Goodbye" );
+                exit = true;
+              }
+              else if(getName){
+                if(json.getString("value").length() != 0){
+                  name = json.getString("value");
+                  response.put("type","hello" );
+                  response.put("value","Hello "+ json.getString("value")+"\nHow many games would you like to play?");
+                  getName = false;
+                  getNum=true;
+                }else{
+                  response.put("type","error" );
+                  response.put("message","Input is empty. Please enter your name.");
+                }
+              }
+              else if(getNum){
+                if(isNumeric(json.getString("value"))){
+                  if(Integer.parseInt(json.getString("value")) <= 6 && Integer.parseInt(json.getString("value")) >= 1){
+                    numRounds = json.getString("value");
+                    System.out.println(numRounds);
+                    num = Integer.parseInt(json.getString("value"));
+                    response.put("type","hello" );
+                    response.put("value","Ok, you will play "+ numRounds +" rounds!\nAre you ready to start? Type start or quit if you don't want to play.");
+                    getNum=false;
+                  }else{
+                    response.put("type","error" );
+                    response.put("message","Please enter an integer from 1 to 6.");
+                  }
+                }else{
+                  response.put("type","error" );
+                  response.put("message","Invalid input. Please enter an integer");
+                }
+              }
+              else if(json.getString("value").equalsIgnoreCase("start") && !(playGame || getNum || getName)){
                 response.put("type","hello" );
-                response.put("value","Ok, you will play "+ numRounds +" rounds!\nAre you ready to start? Type S for start or Q for quit");
-                getNum=false;
-              }else{
+                response.put("value","display first image of puppy");
+                playGame = true;
+              }
+              else if(playGame){
+                if(json.getString("value").equalsIgnoreCase("more")){
+                  response.put("type","image" );
+                  response.put("value","display second image of puppy");
+                }else if(json.getString("value").equalsIgnoreCase("next")){
+                  response.put("type","image" );
+                  response.put("value","display second image of puppy");
+                }else if(json.getString("value").length()==0){
+                  response.put("type","error" );
+                  response.put("message","Input empty");
+                }else{
+                  if(json.getString("value").equalsIgnoreCase("puppy")){
+                    response.put("type","hello" );
+                    response.put("value","correct! + 30 points!");
+                    points+=30;
+                    num--;
+                  }else{
+                    response.put("type","hello" );
+                    response.put("value","WROOONG!!!");
+                  }
+                }
+                //num--;
+                if (num <= 0){
+                  playGame = false;
+                }
+              }
+              else {
+                System.out.println("not sure what you meant");
                 response.put("type","error" );
-                response.put("message","Please enter an integer from 1 to 6.");
+                response.put("message","unknown response" );
               }
             }else{
               response.put("type","error" );
-              response.put("message","Invalid input. Please enter an integer");
+              response.put("message","input has no value" );
             }
-          }
-          else if(json.getString("value").equalsIgnoreCase("s") && !(playGame || getNum || getName)){
-            response.put("type","hello" );
-            response.put("value","display first image of puppy");
-            playGame = true;
-          }
-          else if(playGame){
-            if(json.getString("value").equalsIgnoreCase("more")){
-              response.put("type","image" );
-              response.put("value","display second image of puppy");
-            }else if(json.getString("value").equalsIgnoreCase("next")){
-              response.put("type","image" );
-              response.put("value","display second image of puppy");
-            }else if(json.getString("value").length()==0){
-              response.put("type","error" );
-              response.put("message","Input empty");
-            }else{
-              if(json.getString("value").equalsIgnoreCase("puppy")){
-                response.put("type","hello" );
-                response.put("value","correct! + 30 points!");
-                points+=30;
-                num--;
-              }else{
-                response.put("type","hello" );
-                response.put("value","WROOONG!!!");
-              }
-            }
-            //num--;
-            if (num <= 0){
-              playGame = false;
-            }
-          }
-          else {
-            System.out.println("not sure what you meant");
-            response.put("type","error" );
-            response.put("message","unknown response" );
+          }else{
+            response.put("type","error");
+            response.put("message","type unknown. Please input valid type" );
           }
         }
         else{
