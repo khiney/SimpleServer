@@ -227,6 +227,7 @@ Ok case
 
 
 ##### (f)Screen Capture Link
+https://youtu.be/w6fveafk_IY (its 13 minutes long! Sorry I talked too much)
 
 ##### (g)UDP over TCP
 -The program would have a couple differences if it used UDP instead of TCP. One difference is that UDP

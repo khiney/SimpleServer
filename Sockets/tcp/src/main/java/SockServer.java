@@ -66,6 +66,7 @@ public class SockServer {
       int clientID = 0;
       String numRounds = "";
       int num=0;
+      long pastTime=0, currTime=0;
       boolean getName = false;
       boolean getNum = false;
       boolean playGame = false;
@@ -153,9 +154,12 @@ public class SockServer {
                 }
                 response.put("type","image" );
                 response.put("value",gameImages.get(0).get(0));
+                pastTime = System.currentTimeMillis();
                 playGame = true;
               }
               else if(playGame){
+                currTime = System.currentTimeMillis();
+                if(currTime <= (pastTime + (num*30L*1000))){
                 if(json.getString("value").equalsIgnoreCase("more")){
                   ++index;
                   if (index >= gameImages.get(0).size()){
@@ -191,6 +195,12 @@ public class SockServer {
                     response.put("type","hello" );
                     response.put("value","WROOONG!!!");
                   }
+                }
+                }else{
+                  response.put("type","image" );
+                  response.put("value","img/lose.jpg");
+                  nextGame = true;
+                  playGame=false;
                 }
               }else if(nextGame){
                 if(json.getString("value").equalsIgnoreCase(name)){
