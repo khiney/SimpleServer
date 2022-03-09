@@ -43,7 +43,7 @@ public class SockServer {
               exit = true;
               res.put("ok", true);
               res.put("data", "Thanks for using the server!");
-            }if(req.has("data") && isString(req.getString("data"))){
+            }if(req.has("data")){
                 if ( req.getString("type").equals("p")){
 
                 if(isNumeric(req.getString("data"))){

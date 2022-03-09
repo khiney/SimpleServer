@@ -30,7 +30,7 @@ class Client {
 
             ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
 
-            System.out.println("You want to check for GCD (p), prime factor (f), or exit (exit)?");
+            System.out.println("You want to check for GCD (g), prime factor (f), or exit (exit)?");
             String choice = scanner.nextLine();
 
 
@@ -39,14 +39,14 @@ class Client {
 
             if (choice.equals("g")){
                 System.out.println("What are your numbers?");
-                String input1 = scanner.nextLine();
-                String input2 = scanner.nextLine();
+                int input1 = scanner.nextInt();
+                int input2 = scanner.nextInt();
                 request.put("type", "g");
                 request.put("data1", input1);
                 request.put("data2", input2);
             } else if(choice.equals("f")) {
                 System.out.println("What is your number?");
-                String input = scanner.nextLine();
+                int input = scanner.nextInt();
                 request.put("type", "f");
                 request.put("data", input);
             } else if(choice.equals("exit")){

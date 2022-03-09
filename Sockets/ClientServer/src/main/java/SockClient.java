@@ -29,7 +29,7 @@ class SockClient {
 
       ObjectInputStream in = new ObjectInputStream(sock.getInputStream());
 
-      System.out.println("You want to check for perfect square (p), combine strings (c), or exit (exit)?");
+      System.out.println("Do you want to check for perfect square (p), combine strings (c), or exit (exit)?");
       String choice = scanner.nextLine();
 
 
@@ -42,7 +42,6 @@ class SockClient {
         request.put("type", "p");
         request.put("data", input);
       } else if(choice.equals("c")) {
-        // send over "reverse" request
         System.out.println("What is your first String?");
         String input1 = scanner.nextLine();
         System.out.println("What is your second String?");
@@ -63,12 +62,10 @@ class SockClient {
       String i = (String) in.readObject();
       JSONObject res = new JSONObject(i);
 
-      if (res.getBoolean("ok") && choice.equals("p")){
-        System.out.println(res.getString("data"));
-      }else if(res.getBoolean("ok") && (choice.equals("c")||choice.equals("exit"))){
-        System.out.println(res.getString("data"));
-      }else{
+      if (!res.getBoolean("ok")){
         System.out.println(res.getString("error"));
+      }else{
+        System.out.println(res.getString("data"));
       }
       sock.close(); // close socked after sending
     } catch (Exception e) {e.printStackTrace();}
