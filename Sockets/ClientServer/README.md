@@ -58,14 +58,15 @@ Ok case
 {"type": "exit", "data": <String>}
 
 
-#### Request type missing / unknown
+#### Request type/data missing / unknown
 Server will respond with:
-{"type": "error", "message": "Please enter p or c for type."}
+{"ok": "false", "message": "Please enter p or c for type."}
 {"ok": false, "error": "Type is empty, please enter a valid request Type."}
+{"ok": false, "error": "Data field is empty, please include data in request."}
 
 
 #### JSON Object invalid
 Server will respond with:
-{"ok": false, "error": "Please input a valid JSON Object"}
+{"ok": false, "error": "Please input a valid JSON Object"}Data field is empty, please include data in request.
 
 

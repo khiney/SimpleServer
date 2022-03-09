@@ -195,7 +195,8 @@ public class ClientGui implements src.main.java.OutputPanel.EventHandlers {
 				outputPanel.appendOutput(display.getString("value").toString());
 			}else if(display.getString("type").equals("image")){
 				System.out.println(display.getString("value"));
-				outputPanel.appendOutput(display.getString("value").toString());
+				insertImage(display.getString("value"),0,0);
+				//outputPanel.appendOutput(display.getString("value").toString());
 			}else if(display.getString("type").equals("quit")){
 				outputPanel.appendOutput(display.getString("value").toString());
 				System.exit(0);

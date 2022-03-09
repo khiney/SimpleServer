@@ -43,47 +43,52 @@ public class SockServer {
               exit = true;
               res.put("ok", true);
               res.put("data", "Thanks for using the server!");
-            }else if ( req.getString("type").equals("p")){
+            }if(req.has("data")){
+                if ( req.getString("type").equals("p")){
 
-              if(isNumeric(req.getString("data"))){
-                if(req.getString("data").charAt(0) == '-'){
-                  res.put("ok", false);
-                  res.put("error", "Invalid number. Please enter a positive integer.");
-                }else{
-                  System.out.println("Received the Integer " + req.getString("data"));
-                  res.put("ok", true);
-                  double num = Math.sqrt(Double.parseDouble(req.getString("data")));
-                  if(num - Math.floor(num) == 0){
-                    String numSqrt = String.valueOf((int)num);
-                    res.put("data", "Yes, " + req.getString("data")+" is a perfect square: "+numSqrt+" * "+numSqrt+" = "+req.getString("data"));
-
+                if(isNumeric(req.getString("data"))){
+                  if(req.getString("data").charAt(0) == '-'){
+                    res.put("ok", false);
+                    res.put("error", "Invalid number. Please enter a positive integer.");
                   }else{
-                    res.put("data", "No, " + req.getString("data")+" is NOT a perfect square");
+                    System.out.println("Received the Integer " + req.getString("data"));
+                    res.put("ok", true);
+                    double num = Math.sqrt(Double.parseDouble(req.getString("data")));
+                    if(num - Math.floor(num) == 0){
+                      String numSqrt = String.valueOf((int)num);
+                      res.put("data", "Yes, " + req.getString("data")+" is a perfect square: "+numSqrt+" * "+numSqrt+" = "+req.getString("data"));
+
+                    }else{
+                      res.put("data", "No, " + req.getString("data")+" is NOT a perfect square");
+                    }
                   }
+                }else{
+                  res.put("ok", false);
+                  res.put("error", "Input is not an integer, please enter an integer");
+                }
+
+              }else if(req.getString("type").equals("c")){
+                System.out.println("Received the String " + req.getString("data1"));
+                System.out.println("Received the String " + req.getString("data2"));
+                if(isString(req.getString("data1")) && isString(req.getString("data2"))){
+                 // handle other cases
+                  res.put("ok", true);
+                  res.put("data", "Here is your combined word: " + combine(req.getString("data1"),req.getString("data2")));
+
+                }else if(req.getString("data1").length() == 0 || req.getString("data2").length() == 0){
+                  res.put("ok", false);
+                  res.put("error", "One of your inputs are empty. Please try again");
+                }else{
+                  res.put("ok", false);
+                  res.put("error", "One of your inputs does not contain all letters. Please try again");
                 }
               }else{
                 res.put("ok", false);
-                res.put("error", "Input is not an integer, please enter an integer");
-              }
-
-            }else if(req.getString("type").equals("c")){
-              System.out.println("Received the String " + req.getString("data1"));
-              System.out.println("Received the String " + req.getString("data2"));
-              if(isString(req.getString("data1")) && isString(req.getString("data2"))){
-               // handle other cases
-                res.put("ok", true);
-                res.put("data", "Here is your combined word: " + combine(req.getString("data1"),req.getString("data2")));
-
-              }else if(req.getString("data1").length() == 0 || req.getString("data2").length() == 0){
-                res.put("ok", false);
-                res.put("error", "One of your inputs are empty. Please try again");
-              }else{
-                res.put("ok", false);
-                res.put("error", "One of your inputs does not contain all letters. Please try again");
+                res.put("error", "Please enter p or c for type.");
               }
             }else{
               res.put("ok", false);
-              res.put("error", "Please enter p or c for type.");
+              res.put("error", "Data field is empty, please include data in request.");
             }
           }else{
             res.put("ok", false);

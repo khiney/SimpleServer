@@ -158,8 +158,35 @@ Error cases
     - "Please enter an integer from 1 to 6." -- when input is not from 1 to 6 (number of images available)
     - "input has no value" -- if the user does not have send a value
 
-#### Playing the Game
-###### Request
+#### Playing the Game ###########################################################################################
+###### Request MORE
+    {"type": "hello", "value": "more"}
+
+###### Response
+Ok case
+{"type": "image", "value": <String>}
+-uses insertImage(<String>, 0, 0) in ClientGUI to insert next image
+Error cases
+{"type": "error", "message": <String>}
+
+    String is:
+    - "This is the last hint for this image." -- when input requests more hints than whats available
+    - "Input empty" -- if users doesn't type anything
+
+###### Request NEXT
+    {"type": "hello", "value": "next"}
+
+###### Response
+Ok case
+{"type": "image", "value": <String>}
+-uses insertImage(<String>, 0, 0) in ClientGUI to insert next image
+Error cases
+{"type": "error", "message": <String>}
+
+    String is:
+    - "Input empty" -- if users doesn't type anything
+
+###### Request GUESS
     {"type": "hello", "value": <String>}
 
 ###### Response
@@ -169,9 +196,23 @@ Error cases
 {"type": "error", "message": <String>}
 
     String is:
-    - "Invalid input. Please enter an integer" -- when input is not a number
-    - "Please enter an integer from 1 to 6." -- when input is not from 1 to 6 (number of images available)
-    - "input has no value" -- if the user does not have send a value
+    - "Input empty" -- if users doesn't type anything
+
+#################################################################################################################
+
+#### Continue
+###### Request
+    {"type": "hello", "value": <String>}
+-user enters their name or quit
+###### Response
+Ok case
+{"type": "quit", "value": <String>}
+{"type": "hello", "value": <String>}
+Error cases
+{"type": "error", "message": <String>}
+
+    String is:
+    - "Please enter your name or quit" -- if input is not their name or quit
 
 #### Exit
 ###### Request
@@ -181,7 +222,9 @@ Error cases
 Ok case
 {"type": "quit", "value": <String>}
 
+
 ##### (e)Design Explanation
+
 
 ##### (f)Screen Capture Link
 

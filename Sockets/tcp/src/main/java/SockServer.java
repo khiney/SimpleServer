@@ -71,9 +71,18 @@ public class SockServer {
       boolean playGame = false;
       boolean exit = false;
       boolean begin = false;
-      //ArrayList<> puppy =
-
-
+      boolean nextGame = false;
+      int index = 0;
+      ArrayList<String> puppy = new ArrayList<>(Arrays.asList("img/puppy/puppy1.png","img/puppy/puppy2.png","img/puppy/puppy3.png"));
+      ArrayList<String> car = new ArrayList<>(Arrays.asList("img/car/car1.png","img/car/car2.png","img/car/car3.png"));
+      ArrayList<String> cat = new ArrayList<>(Arrays.asList("img/cat/cat1.png","img/cat/cat2.png","img/cat/cat3.png"));
+      ArrayList<String> cucumber = new ArrayList<>(Arrays.asList("img/cucumber/cucumber1.png","img/cucumber/cucumber2.png","img/cucumber/cucumber3.png"));
+      ArrayList<String> hat = new ArrayList<>(Arrays.asList("img/hat/hat1.png","img/hat/hat2.png","img/hat/hat3.png"));
+      ArrayList<String> pug = new ArrayList<>(Arrays.asList("img/pug/pug1.png","img/pug/pug2.png","img/pug/pug3.png"));
+      ArrayList<ArrayList<String> > images = new ArrayList<>(Arrays.asList(puppy,car,cat,cucumber,hat,pug));
+      ArrayList<String > answers = new ArrayList<>(Arrays.asList("puppy","car","cat","cucumber","hat","pug"));
+      ArrayList<ArrayList<String> > gameImages = new ArrayList<ArrayList<String>>();
+      ArrayList<String> gameAnswers= new ArrayList<String>();
       // read in one object, the message. we know a string was written only by knowing what the client sent.
       // must cast the object from Object to desired type to be useful
       while(true) {
@@ -96,7 +105,7 @@ public class SockServer {
 
               response.put("type","hello" );
               response.put("value","Hello, please tell me your name." );
-              sendPic("img/lose.jpg", response); // calling a method that will manipulate the image and will make it send ready
+              sendPic("img/hi.png", response); // calling a method that will manipulate the image and will make it send ready
               getName = true;
               begin = true;
             }if(json.has("value")){
@@ -124,7 +133,7 @@ public class SockServer {
                     System.out.println(numRounds);
                     num = Integer.parseInt(json.getString("value"));
                     response.put("type","hello" );
-                    response.put("value","Ok, you will play "+ numRounds +" rounds!\nAre you ready to start? Type start or quit if you don't want to play.");
+                    response.put("value","Ok " + name + " you will play "+ numRounds +" rounds!\nAre you ready to start? Type start or quit if you don't want to play.");
                     getNum=false;
                   }else{
                     response.put("type","error" );
@@ -136,34 +145,62 @@ public class SockServer {
                 }
               }
               else if(json.getString("value").equalsIgnoreCase("start") && !(playGame || getNum || getName)){
-                response.put("type","hello" );
-                response.put("value","display first image of puppy");
+                //response.put("type","hello" );
+                //response.put("value","display first image of puppy");
+                for(int i=0; i < num;i++){
+                  gameImages.add(images.get(i));
+                  gameAnswers.add(answers.get(i));
+                }
+                response.put("type","image" );
+                response.put("value",gameImages.get(0).get(0));
                 playGame = true;
               }
               else if(playGame){
                 if(json.getString("value").equalsIgnoreCase("more")){
-                  response.put("type","image" );
-                  response.put("value","display second image of puppy");
+                  ++index;
+                  if (index >= gameImages.get(0).size()){
+                    response.put("type","error" );
+                    response.put("message","This is the last hint for this image.");
+                  }else{
+                    response.put("type","image" );
+                    response.put("value",gameImages.get(0).get(index));
+                  }
                 }else if(json.getString("value").equalsIgnoreCase("next")){
-                  response.put("type","image" );
-                  response.put("value","display second image of puppy");
+                  gameImages.remove(0);
+                  gameAnswers.remove(0);
+                  if(gameAnswers.size() > 0){
+                    response.put("type","image" );
+                    response.put("value",gameImages.get(0).get(0));
+                    //num--;
+                    index = 0;
+                  }else{
+                    response.put("type","hello" );
+                    response.put("value","That was the last image. You earned "+points+" points!\nPlease type your name to continue or quit.");
+                    nextGame = true;
+                    playGame=false;
+                  }
                 }else if(json.getString("value").length()==0){
                   response.put("type","error" );
                   response.put("message","Input empty");
                 }else{
-                  if(json.getString("value").equalsIgnoreCase("puppy")){
+                  if(json.getString("value").equalsIgnoreCase(gameAnswers.get(0))){
                     response.put("type","hello" );
-                    response.put("value","correct! + 30 points!");
+                    response.put("value","correct! + 30 points!\nType 'next' to continue");
                     points+=30;
-                    num--;
                   }else{
                     response.put("type","hello" );
                     response.put("value","WROOONG!!!");
                   }
                 }
-                //num--;
-                if (num <= 0){
-                  playGame = false;
+              }else if(nextGame){
+                if(json.getString("value").equalsIgnoreCase(name)){
+                  nextGame=false;
+                  getNum = true;
+                  response.put("type","hello" );
+                  response.put("value","Welcome back "+name+ ".\nHow many rounds would you like to play?");
+                }else{
+                  response.put("type","error" );
+                  response.put("message","Please enter your name or quit");
                 }
               }
               else {
