@@ -20,7 +20,7 @@ public class SockServer {
     boolean exit = false;
     try {
       //open socket
-      ServerSocket serv = new ServerSocket(8888); // create server socket on port 8888
+      ServerSocket serv = new ServerSocket(8080); // create server socket on port 8888
       System.out.println("Server ready for connections");
 
       while (true) {
@@ -43,7 +43,7 @@ public class SockServer {
               exit = true;
               res.put("ok", true);
               res.put("data", "Thanks for using the server!");
-            }if(req.has("data")){
+            }if(req.has("data") && isString(req.getString("data"))){
                 if ( req.getString("type").equals("p")){
 
                 if(isNumeric(req.getString("data"))){
