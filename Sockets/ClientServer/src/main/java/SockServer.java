@@ -43,8 +43,7 @@ public class SockServer {
               exit = true;
               res.put("ok", true);
               res.put("data", "Thanks for using the server!");
-            }if(req.has("data")||(req.has("data1")&&req.has("data2"))){
-                if ( req.getString("type").equals("p")){
+            } else if ( req.getString("type").equals("p")){
 
                 if(isNumeric(req.getString("data"))){
                   if(req.getString("data").charAt(0) == '-'){
@@ -86,9 +85,6 @@ public class SockServer {
                 res.put("ok", false);
                 res.put("error", "Please enter p or c for type.");
               }
-            }else{
-              res.put("ok", false);
-              res.put("error", "Data field is empty, please include data in request.");
             }
           }else{
             res.put("ok", false);

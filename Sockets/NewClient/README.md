@@ -1,52 +1,48 @@
-##### Author: Korry Hinestroza
+##### Author: Jessica Thiel
 * Version: March 2022
 
 
 ##### Purpose
-SockServer - SockServer has 2 functions for the user. First is the perfect square checker. 
-The user enters a positive integer and the server returns a statement telling you if the number is a perfect square 
-and the square root of the number if it is a perfect square. The second function is combine strings. 
-This function takes two strings and combines them by alternating letters.
-* `Server` ip = '54.146.175.135', port = '8888'
+SockServer - Has 2 main functions for user. The first is to find the GCD of two numbers. Where the user inputs two integers and will receive from the server an integer representing the GCD. The second is to find the prime factor of a number. Where the user inputs one integer and receives a string containing the prime factors of that number.
+* `Server` ip = '3.88.193.49', port = '8080'
 
 ##### Protocol Description
 
-#### Perfect Square Check
+
+#### GCD
 ###### Request
-    {"type": "p", "data": <Integer>}
+    {"type": "g", "data1": <Integer>, "data2": <Integer>}
 
-**"ok" is "true" for successful cases**
-
-**"ok" is "false" for unsuccessful cases**
-###### Response
-Ok case
-{"ok": true, "data": <String>}
-Error cases
-{"ok": false, "error": <String>}
-
-    String is:
-    - "Input is not an integer, please enter an integer" -- if the "data" field in the request is not an Integer
-    - "Type is empty, please enter a valid request Type." -- if type field is missing
-    - "Invalid number. Please enter a positive integer." -- if integer is negative
-
-
-#### Combine Strings
-###### Request
-    {"type": "c", "data1": <String>, "data2": <String>}
-    
-    Entering data1/data2:
-    - When entering data1 and data2 each word is entered one at a time 
-    Type first word and press enter. Type second word and press enter.
+    Entering Inputs:
+    - data1 and data2 will be entered on separate lines.
 
 ###### Response
 Ok case
-{"ok": true, "data": <String>}
+{"type": "g", "data": <Integer>}
 Error cases
-{"ok": false, "error": <String>}
+{"type": "error", "message": <String>}
 
     String is:
-    - "One of your inputs does not contain all letters. Please try again" -- when one of your inputs is not all letters
-    - "One of your inputs are empty. Please try again" -- one of your strings are empty
+    - "Input is not an integer." -- If one of the "data" field in the request is not an Integer
+    - "Missing second input." -- If the request does not have two "data" field
+    - "Inputs are missing." -- If the request does not have a second "data" field
+    - "Invalid JSON Object" -- If the input is an invalid JSON Object
+
+
+#### Prime Factoring
+###### Request
+    {"type": "f", "data": <Integer>}
+
+###### Response
+Ok case
+{"type": "f", "data": <String>}
+Error cases:
+{"type": "error", "message": <String>}
+
+    String is:
+    - "Input is not an integer." -- If the "data" field in the request is not an Integer
+    - "Input is missing." -- If the request does not have a "data" field
+    - "Invalid JSON Object." -- If the input is an invalid JSON Object
 
 
 #### Exit
@@ -54,19 +50,16 @@ Error cases
     {"type": "exit"}
 
 ###### Response
-Ok case 
+Ok case
 {"type": "exit", "data": <String>}
 
 
-#### Request type/data missing / unknown
+#### Request type invalid
 Server will respond with:
-{"ok": "false", "message": "Please enter p or c for type."}
-{"ok": false, "error": "Type is empty, please enter a valid request Type."}
-{"ok": false, "error": "Data field is empty, please include data in request."}
+{"type": "error", "message": "Invalid input please use l or f."}
 
 
-#### JSON Object invalid
+#### JSON Object failed
 Server will respond with:
-{"ok": false, "error": "Please input a valid JSON Object"}Data field is empty, please include data in request.
-
+{"type": "error", "message": "Invalid JSON Object."}
 
