@@ -85,7 +85,6 @@ public class SockServer {
                 res.put("ok", false);
                 res.put("error", "Please enter p or c for type.");
               }
-            }
           }else{
             res.put("ok", false);
             res.put("error", "Type is empty, please enter a valid request Type.");
