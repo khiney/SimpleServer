@@ -73,6 +73,7 @@ public class SockServer {
       boolean exit = false;
       boolean begin = false;
       boolean nextGame = false;
+      int correct = 0;
       int index = 0;
       ArrayList<String> puppy = new ArrayList<>(Arrays.asList("img/puppy/puppy1.png","img/puppy/puppy2.png","img/puppy/puppy3.png"));
       ArrayList<String> car = new ArrayList<>(Arrays.asList("img/car/car1.png","img/car/car2.png","img/car/car3.png"));
@@ -178,10 +179,17 @@ public class SockServer {
                     //num--;
                     index = 0;
                   }else{
+                    if(correct == num){
+                      response.put("type","image" );
+                      response.put("value","img/win.jpg");
+                      nextGame = true;
+                      playGame=false;
+                    }else{
                     response.put("type","hello" );
                     response.put("value","That was the last image. You earned "+points+" points!\nPlease type your name to continue or quit.");
                     nextGame = true;
                     playGame=false;
+                    }
                   }
                 }else if(json.getString("value").length()==0){
                   response.put("type","error" );
@@ -191,6 +199,7 @@ public class SockServer {
                     response.put("type","hello" );
                     response.put("value","correct! + 30 points!\nType 'next' to continue");
                     points+=30;
+                    correct++;
                   }else{
                     response.put("type","hello" );
                     response.put("value","WROOONG!!!");

@@ -14,7 +14,7 @@ ClientGUI takes servers answer and displays it to the user.
 * Client: use `runClient` to connect to default host "localhost", port '8080' or use `runClient -Phost=<host> -Pport=<port#>` for custom host/port
 
 ##### (b)Requirements Fulfilled
-- 1, 2, 3, 4, 5, 6(partial), 7(partial), 8, 9, 10, 11(partial), 12(partial), 13, 14, 15  
+- 1, 2, 3, 4, 5, 6, 7(partial), 8, 9, 10, 11, 12(partial), 13, 14, 15  
 
 ##### (c)UML Diagram
 - UML Diagram image included in rep (see ClientServer_Diagram) 
@@ -52,7 +52,10 @@ Error cases
 
 #### Entering Number of Rounds
 ###### Request
-    {"type": "hello", "value": <Integer>}
+    {"type": "hello", "value": <String>}
+    String is:
+        The String is an integer, however, the program will convert the int on the server side. 
+        Therefore the client should send ints as strings.
 
 ###### Response
 Ok case
@@ -131,12 +134,12 @@ Ok case
 
 
 ##### (e)Design Explanation
-I explained this in my overly long video, but overall I just made sure I thought of a mistake that could be made
+I explained this in my video, but overall I just made sure I thought of a mistake that could be made
 at every step of my program. From not entering a JSON object, empty inputs, not having the right data types, 
 etc. In my video I point out what I did within my code to catch mistakes and prevent the program server from crashing.
 
 ##### (f)Screen Capture Link
-https://youtu.be/w6fveafk_IY (its 13 minutes long! Sorry I talked too much)
+[link]https://youtu.be/w6fveafk_IY      (its 13 minutes long! Sorry I talked too much)
 
 ##### (g)UDP over TCP
 -The program would have a couple differences if it used UDP instead of TCP. One difference is that UDP

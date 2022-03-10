@@ -1,6 +1,8 @@
 ##### Author: Korry Hinestroza
 * Version: March 2022
 
+##### Peer: Jessica Thiel
+https://youtu.be/oicxC90oWZ0
 
 ##### Purpose
 SockServer - SockServer has 2 functions for the user. First is the perfect square checker. 
@@ -62,7 +64,7 @@ Ok case
 Server will respond with:
 {"ok": "false", "message": "Please enter p or c for type."}
 {"ok": false, "error": "Type is empty, please enter a valid request Type."}
-{"ok": false, "error": "Data field is empty, please include data in request."}
+
 
 
 #### JSON Object invalid

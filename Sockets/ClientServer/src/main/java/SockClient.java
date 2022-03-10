@@ -19,7 +19,7 @@ class SockClient {
 
     try {
       // open the connection
-      sock = new Socket(host, 8888); // connect to host and socket on port 8888
+      sock = new Socket(host, 8080); // connect to host and socket on port 8888
 
       // get output channel
       OutputStream out = sock.getOutputStream();
