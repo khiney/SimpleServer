@@ -64,8 +64,10 @@ class Client {
 
             if (res.getString("type").equals("error")){
                 System.out.println(res.getString("message"));
-            }else{
+            }else if(res.getString("type").equals("f")){
                 System.out.println(res.getString("data"));
+            }else{
+                System.out.println(res.getInt("data"));
             }
             sock.close(); // close socked after sending
         } catch (Exception e) {e.printStackTrace();}

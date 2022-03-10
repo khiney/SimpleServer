@@ -13,7 +13,7 @@ This function takes two strings and combines them by alternating letters.
 
 #### Perfect Square Check
 ###### Request
-    {"type": "p", "data": <Integer>}
+    {"type": "p", "data": <String>}
 
 **"ok" is "true" for successful cases**
 
